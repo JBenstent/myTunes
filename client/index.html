@@ -1,0 +1,29 @@
+<!--
+/client/index.html
+entry point for the client. requires all necessary client files
+-->
+
+<!DOCTYPE html>
+<html ng-app='itemsApp'>
+  <head>
+    <meta charset="utf-8">
+    <title>Items App</title>
+
+    <script src="angular/angular.js"></script>
+    <script src="angular-route/angular-route.js"></script>
+    <script src="config.js"></script>
+    <script src="factories/item.js"></script>
+    <script src="controllers/items-index.js"></script>
+    <script src="controllers/new-item.js"></script>
+  </head>
+  <body>
+
+
+<h1>Home Page</h1>
+<a href="#!/items">All Items</a>
+    <div ng-view=''>
+    </div>
+
+
+  </body>
+</html>
