@@ -4,23 +4,23 @@ entry point for the client. requires all necessary client files
 -->
 
 <!DOCTYPE html>
-<html ng-app='itemsApp'>
+<html ng-app='app'>
   <head>
     <meta charset="utf-8">
     <title>Items App</title>
 
     <script src="angular/angular.js"></script>
     <script src="angular-route/angular-route.js"></script>
-    <script src="config.js"></script>
-    <script src="factories/item.js"></script>
+    <script src="routes.js"></script>
+    <script src="factories/taskfactory.js"></script>
     <script src="controllers/items-index.js"></script>
-    <script src="controllers/new-item.js"></script>
+    <script src="controllers/create-task.js"></script>
   </head>
   <body>
 
 
 <h1>Home Page</h1>
-<a href="#!/items">All Items</a>
+<a href="#!/alltasks">All Tasks</a> | <a href="#!/create">Create</a>
     <div ng-view=''>
     </div>
 
