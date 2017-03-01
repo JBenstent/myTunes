@@ -15,7 +15,7 @@ var TunesController = require("../controllers/items") //exporting the results of
 module.exports = function(app) {
 
     // app.get("/items", TasksController.index) //Controller get items
-    app.post("/create", TunesController.create),
+  
     app.post("/createuser", TunesController.createuser) //Controller create items
     app.post("/loginuser", TunesController.loginuser)
     app.post("/uploadtune", upload.single('tune'), TunesController.uploadtune)
