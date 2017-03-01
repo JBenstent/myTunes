@@ -6,13 +6,11 @@ responses
 
 console.log("Loaded: /server/controllers/items.js")
 var mongoose = require('mongoose')
-var Task = mongoose.model("Task")
+var fs = require('fs')
+var User = mongoose.model("User")
 
 module.exports = {
-    index: function(request, response) {
-        console.log("Items Index");
 
-    },
     create: function(request, response) {
         var task = new Task({
             task: request.body.task,
@@ -27,44 +25,56 @@ module.exports = {
         })
       },
 
-
-    retrieve: function(request, response) {
-      Task.find({}, function(err, tasks) {
-        console.log("This is all task information", tasks)
-        response.json({tasks: tasks})
-        })
-      },
-
-      update: function(request, response) {
-        Task.findOne({_id:request.body.task_id}, function(err, task){
-          console.log('TASK', task)
-          task.status = request.body.NewStatus
-
-          task.save(function(err) {
-            if (err) {
-              console.log('this is an error:', err)
-            } else {
-              console.log('SUCCESSFULLY UDPATED TASK STATUS:')
-              response.json(task)
-            }
-        })
-
-        })
-
-      },
-
       createuser: function(request, response) {
-      //   User.find({username: request.body.username}, function(err, user) {
-      //     if (err) {
-      //       console.log(err)
-      //     } else if (user){
-      //       request.session.userID = user._id
-      //       // request.session.name = username.
-      //
-      //
-      //     }
-      //
-      //
-      //   })
-      }
+
+        console.log('This is the request.body', request.body)
+
+        var user = new User({
+          username: request.body.username,
+          password: request.body.password
+        })
+        user.save(function(err) {
+          if (err) {
+            console.log('Error Occurred', err)
+          } else {
+            response.json(request.body)
+          }
+        })
+
+      },
+
+      loginuser: function(request, response) {
+        User.findOne({username: request.body.username}, function(err, user) {
+          if (err) {
+            console.log('ERROR', err);
+          } else {
+            response.json(user)
+          }
+        });
+      },
+
+      uploadtune: function(request, response) {
+        console.log('this is the file',request.file);
+        console.log(typeof(request.file));
+
+        var file = new User({
+          file: request.file
+        })
+        user.save(function(err, file) {
+          if (err) {
+            console.log(err);
+          }
+        })
+
+        fs.writeFile('testFile.mp3', request.file, "base64", function(err) {
+          if (err) {
+            console.log(err)
+          } else {
+            response.json({})
+          }
+        })
+
+
+        // console.log("SIZE OF FILE:", request.body.tune.data.length);
+      },
     }

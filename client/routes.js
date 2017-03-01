@@ -5,24 +5,33 @@ Configure client routes, and really anything
 
 */
 
-var app = angular.module("app", ["ngRoute"]);
+var app = angular.module("app", ["ngRoute", "ngFileUpload"]);
+
 console.log("creating app")
 
 app.config(function($routeProvider) {
     $routeProvider
-    .when("/", {
-      templateUrl: "partials/login.html"
-      controller: "all-Tasks"
+
+    .when("/createaccount", {
+      templateUrl: "partials/createaccount.html",
+      controller: "createaccount"
     })
 
-    .when("/alltasks", {
-        templateUrl: "partials/all-tasks.html",
-        controller: "all-Tasks"
+    .when("/uploadtune", {
+      templateUrl: "partials/uploadtune.html",
+      controller: "uploadtune"
     })
-    .when("/create", {
-        templateUrl: "partials/new_item.html",
-        controller: "Login"
+
+    .when("/login", {
+      templateUrl: "partials/login.html",
+      controller: "login"
     })
+
+    .when("/profile", {
+      templateUrl: "partials/profile.html",
+      controller: "profile"
+    })
+
     .otherwise('/')
     console.log("Configuring routes")
 });
