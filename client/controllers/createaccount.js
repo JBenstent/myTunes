@@ -24,7 +24,7 @@ app.controller("createaccount", function(taskFactory, $scope, $location) {
       $scope.createpassword = ""
       $scope.confirmpassword = ""
       alert('Successfully created profile')
-      // $location.url('/profile')
+      $location.url('/profile')
     })
   }
   }

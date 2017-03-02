@@ -4,7 +4,14 @@ View / Template for showing all items
  -->
  <div class="col-lg-6 col-sm-6">
          <div class="useravatar">
-             <img src="" alt="profile picture">
+             <img src="40a9e63631170e10f9873b491f3581a6" alt="profile picture">
+             <input type="file" id="file" ngf-resize="{width: 200, height: 200}" ngf-select ng-model="imagefile" name="imagefile"/>
+             <br>
+             <button ng-click="uploadImage()">Upload Image</button>
+             <br>
+             <br>
+             <p><button type="button" id="followbtn" ng-click="follow(user._id)">Follow</button></p>
+             <p><button type="button" id="Unfollowbtn" ng-click="Unfollow(user._id)">UnFollow</button></p>
          </div>
          <div class="card-info"> <span class="card-title">User Information</span>
 
@@ -40,5 +47,13 @@ View / Template for showing all items
          </div>
        </div>
      </div>
+
+     </div>
+     <div class="">
+       <h1>HELLOW! {{singleProfile.username}} </h1>
+       <hr>
+       <ul>
+         <li ng-repeat="u in allUsers.users"><a href="#!/profile/{{u._id}}">{{u.username}}</a></li>
+       </ul>
 
      </div>

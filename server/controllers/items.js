@@ -6,25 +6,11 @@ responses
 
 console.log("Loaded: /server/controllers/items.js")
 var mongoose = require('mongoose')
+var session = require('express-session')
 var fs = require('fs')
 var User = mongoose.model("User")
 
 module.exports = {
-
-    create: function(request, response) {
-        var task = new Task({
-            task: request.body.task,
-            status: 'ToDo'
-        })
-        task.save(function(err) {
-            if (err) {
-                console.log('Error occured:', err)
-            } else {
-                response.json(task)
-            }
-        })
-      },
-
       createuser: function(request, response) {
 
         console.log('This is the request.body', request.body)
@@ -37,6 +23,8 @@ module.exports = {
           if (err) {
             console.log('Error Occurred', err)
           } else {
+            request.session.userID = user._id
+            request.session.username = user.username
             response.json(request.body)
           }
         })
@@ -47,10 +35,24 @@ module.exports = {
         User.findOne({username: request.body.username}, function(err, user) {
           if (err) {
             console.log('ERROR', err);
-          } else {
+          } else if (user){
+            request.session.userID = user._id
+            request.session.username = user.username
             response.json(user)
           }
         });
+      },
+
+      loggedin: function(request, response){
+        User.findOne({_id: request.session.userID}, function(err,user){
+          if (err){
+            console.log("error finding user:", err);
+          }
+          else if(user){
+            console.log('user in session:', user);
+            response.json({user:user})
+          }
+        })
       },
 
       uploadtune: function(request, response) {
@@ -64,17 +66,155 @@ module.exports = {
           if (err) {
             console.log(err);
           }
+          fs.writeFile('testFile.mp3', request.file, "base64", function(err) {
+            if (err) {
+              console.log(err)
+            } else {
+              response.json({})
+            }
+          })
         })
+      },
 
-        fs.writeFile('testFile.mp3', request.file, "base64", function(err) {
-          if (err) {
-            console.log(err)
-          } else {
-            response.json({})
+      uploadimage: function(request, response){
+        var ext = '.jpg';
+        console.log("yess",request.file);
+        User.findOne({_id:request.session.userID}, function(err, user){
+          console.log('who',user);
+          if(err){
+            console.log("error finding user");
+          }
+          else if(user){
+            console.log("found user");
+            console.log('here',request.file);
+
+            if (request.file.mimetype == 'image/jpeg' || request.file.mimetype == 'image/jpg' || request.file.mimetype == 'png') {
+              user.image = request.file.path + ext
+            }
+
+            user.save(function(err, user){
+              if (err){
+                console.log("error uploading image");
+              }
+              else if(user){
+                fs.rename('/uploads/images/'+ request.file.filename, '/uploads/images/', function(err){
+                  if(err){
+                    console.log("error naming file", err);
+                  }
+                  else{
+                    response.json({})
+                    console.log("correctly named file", file);
+                    console.log("successfully uploaded image:",file);
+                  }
+                })
+              }
+            })
           }
         })
+      },
+
+        follow: function(request, response) {
+          console.log('in server route');
+          console.log('this is the session', request.session.userID);
+
+          User.findOne({_id: request.session.userID}, function(err, user){
+            if(err){
+              console.log("error at following:", err);
+            }
+            else if(user){
+              console.log(request.params.id);
+              user.following.push(request.params.id)
+            }
+            user.save(function (err, user) {
+              if(err){
+                console.log("failed to follow:", err);
+              }
+              else if(user){
+                console.log("following user");
+            User.findOne({_id:request.params.id}, function(err, user){
+              if(err){
+                console.log("error finding user:", err);
+              }
+              else if(user){
+                user.followers.push(request.session.userID);
+              }
+              user.save(function(err, user){
+                if(err){
+                  console.log("failed to add follower");
+                }
+                else if(user){
+                  console.log("added to followers");
+                   response.json(user)
+                }
+              })
+            })
+            }
+          })
+        })
+      },
+
+      unfollow: function(request, response){
+        User.findOne({_id:request.session.userID}, function(err, user){
+          if(err){
+            console.log("could not find user:", err);
+          }
+          else if(user){
+            user.following.remove(request.params.id);
+          }
+          user.save(function(err, user){
+            if(err){
+              console.log("could not unfollow", err);
+            }
+            else if(user){
+              console.log("unfollowed user", user);
+          User.findOne({_id:request.params.id}, function(err, user){
+            if(err){
+              console.log("Could not find unfollowed user", user);
+            }
+            else if(user){
+              user.followers.remove(request.session.userID);
+            }
+            user.save(function(err, user){
+              if(err){
+                console.log("failed to remove", err);
+              }
+              else if(user){
+                console.log("removed from followers");
+                response.json(user)
+              }
+            })
+          })
+          }
+        })
+      })
+    },
+
+        getAllUsers: function(request, response) {
+          User.find({}, function(err, users){
+            if(err){
+              console.log("Error retrieving Users:", err);
+            }
+            else if(users){
+              console.log("These are all users:", users);
+              response.json({users:users})
+            }
+          })
+        },
+
+        userProfile: function (request, response) {
+          User.findOne({_id: request.params.id}, function(err, profile){
+            if(err){
+              console.log("error in profile:", err);
+            }
+            else if(profile){
+              console.log("heres the profile", profile);
+              response.json({profile:profile})
+            }
+          })
+
+        },
+
 
 
         // console.log("SIZE OF FILE:", request.body.tune.data.length);
-      },
-    }
+      }

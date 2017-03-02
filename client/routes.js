@@ -27,7 +27,7 @@ app.config(function($routeProvider) {
       controller: "login"
     })
 
-    .when("/profile", {
+    .when("/profile/:id", {
       templateUrl: "partials/profile.html",
       controller: "profile"
     })

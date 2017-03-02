@@ -12,7 +12,7 @@ var session = require('express-session');
 
 
 
-
+app.use(express.static(path.join(__dirname, "uploads/images")));
 app.use(express.static(path.join(__dirname, "client"))); //serve client folder
 app.use(express.static(path.join(__dirname, "bower_components")));
 app.use(bodyParser.json({limit: '50mb'}))

@@ -1,7 +1,6 @@
 app.controller("uploadtune", function(taskFactory, $scope, $location, Upload) {
 
   $scope.add = function(){
-
     Upload.upload(
       {url: '/uploadtune',data: {'tune': $scope.file}})
 
