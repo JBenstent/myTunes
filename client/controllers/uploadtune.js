@@ -1,6 +1,7 @@
 app.controller("uploadtune", function(taskFactory, $scope, $location, Upload) {
 
 console.log('THIS IS THE FACTORY USER',taskFactory.user);
+
   if (!taskFactory.user) {
     $location.url('/createaccount')
   }
@@ -12,6 +13,7 @@ console.log('THIS IS THE FACTORY USER',taskFactory.user);
       data: {user: taskFactory.user, tune: $scope.file}
     }).then(function(response){
       console.log('this is the response',response);
+      $location.url('/')
     });
    }
   });

@@ -12,6 +12,11 @@ console.log("creating app")
 app.config(function($routeProvider) {
     $routeProvider
 
+    .when("/", {
+      templateUrl: "partials/homepage.html",
+      controller: 'homepage'
+    })
+
     .when("/createaccount", {
       templateUrl: "partials/createaccount.html",
       controller: "createaccount"

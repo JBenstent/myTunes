@@ -26,9 +26,19 @@ module.exports = {
         })
       },
 
+      getdata:  function(request, response) {
+        Tune.find({}, function (err, tune) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log('THIS IS THE TUNE', tune, 'end of TUNE');
+            response.json(tune)
+          }
+        })
+      },
+
       createuser: function(request, response) {
 
-        console.log('This is the request.body', request.body)
 
         var user = new User({
           username: request.body.username,
@@ -85,7 +95,6 @@ module.exports = {
             if (err) {
               console.log(err)
             } else {
-              console.log('THIS IS THE TUNE',tune);
               response.json(tune)
             }
           })
