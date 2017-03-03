@@ -1,24 +1,16 @@
 app.controller("uploadtune", function(taskFactory, $scope, $location, Upload) {
+  if (!taskFactory.user) {
+    $location.url('/createaccount')
+  }
 
   $scope.add = function(){
-    Upload.upload(
-      {url: '/uploadtune',data: {'tune': $scope.file}})
-
-
-    // var f = document.getElementById('file').files[0],
-    //     r = new FileReader();
-    // r.onloadend = function(e){
-    //   var data = e.target.result;
-    //   console.log("Found Data, but it was large", data.length);
-    //   // console.log('THIS IS THE DATA', data)
-    //   taskFactory.uploadtune({data: data}, function(response){
-    //
-    //   });
-    //
-    //   //send your binary data via $http or $resource or do anything else with it
-    // }
-    // r.readAsBinaryString(f);
-
+    console.log('USER!!', taskFactory.user);
+    Upload.upload({
+      url: '/uploadtune',
+      data: {user: taskFactory.user, tune: $scope.file}
+    }).then(function(response){
+      console.log('this is the response',response);
+      $location.url('/')
+    });
   }
-  console.log('created upload tune page')
-});
+})

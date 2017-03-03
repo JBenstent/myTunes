@@ -15,15 +15,18 @@ entry point for the client. requires all necessary client files
     <script src="routes.js"></script>
     <script src="factories/taskfactory.js"></script>
     <script src="controllers/profile.js"></script>
-    <script src="controllers/home.js"></script>
     <script src="controllers/userlogin.js"></script>
     <script src="controllers/createaccount.js"></script>
     <script src="controllers/uploadtune.js"></script>
+    <script src="controllers/main.js"></script>
+    <script src="controllers/homepage.js"></script>
+    <script rel="stylesheets" href="/assets/stylesheets/audiojs/audiojs/audio.min.js"></script>
+
   </head>
   <body>
 
     <nav class="navbar navbar-default">
-      <div class="container-fluid">
+      <div class="container-fluid" ng-controller="mainController">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -32,7 +35,7 @@ entry point for the client. requires all necessary client files
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#!/profile/{{user._id}}">myTunes</a>
+          <a class="navbar-brand" href="#!/profile/userID">myTunes</a>
         </div>
 
 
@@ -43,14 +46,15 @@ entry point for the client. requires all necessary client files
             <li class="active"><a href="#!/createaccount">Create Account<span class="sr-only">(current)</span></a></li>
             <li><a href="#!/login">Sign In</a></li>
             <li><a href="#!/uploadtune">Upload your Tunes</a></li>
+            <li><a href="#!/">Tunes</a></li>
           </ul>
 
 
           <form class="navbar-form navbar-left">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
+              <input type="text" class="form-control" placeholder="Search" ng-model="searchItem">
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default" ng-click="search()">Submit</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Logout</a></li>

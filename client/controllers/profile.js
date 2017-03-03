@@ -3,7 +3,7 @@
 the logic for items-index partial, will connect the factory with the template
 */
 
-app.controller("profile", function(taskFactory, $scope, $location, $routeParams, Upload) {
+app.controller("profile", function(taskFactory, $scope, $location, $routeParams, Upload, $rootScope) {
   console.log("who i follow:");
   $scope.follow = function(id){
     taskFactory.Followuser($routeParams.id, function(user){
@@ -15,6 +15,7 @@ app.controller("profile", function(taskFactory, $scope, $location, $routeParams,
       console.log("unfollow him:", user);
     })
   }
+
 
 
   taskFactory.getUsers(function(allUsers){
@@ -43,4 +44,6 @@ app.controller("profile", function(taskFactory, $scope, $location, $routeParams,
       $location.url('/profile/:id')
     })
   }
+
+  $rootScope.$on('searchItem')
 })

@@ -26,11 +26,13 @@ View / Template for showing all items
          <div class="btn-group" role="group">
              <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
                  <div class="hidden-xs">Followers</div>
+                 {{singleProfile.followers.length}}
              </button>
          </div>
          <div class="btn-group" role="group">
              <button type="button" id="following" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                  <div class="hidden-xs">Following</div>
+                 {{singleProfile.following.length}}
              </button>
          </div>
      </div>
@@ -48,12 +50,13 @@ View / Template for showing all items
        </div>
      </div>
 
+
      </div>
      <div class="">
        <h1>HELLOW! {{singleProfile.username}} </h1>
        <hr>
        <ul>
-         <li ng-repeat="u in allUsers.users"><a href="#!/profile/{{u._id}}">{{u.username}}</a></li>
+         <li ng-repeat="u in allUsers.users | filter:'searchItem'"><a href="#!/profile/{{u._id}}">{{u.username}}</a></li>
        </ul>
 
      </div>

@@ -3,17 +3,28 @@
 Main logic for connecting http requests with database requests, delivering
 responses
 */
-
 console.log("Loaded: /server/controllers/items.js")
 var mongoose = require('mongoose')
 var session = require('express-session')
 var fs = require('fs')
+var sessions = require('express-session')
 var User = mongoose.model("User")
+var Tune = mongoose.model("Tune")
 
 module.exports = {
+      getdata: function(request, response) {
+        Tune.find({}, function (err, tune) {
+          if (err) {
+            console.log(err);
+          } else if(tune){
+            console.log('THIS IS THE TUNE', tune, 'end of TUNE');
+            response.json(tune)
+          }
+        })
+      },
+
       createuser: function(request, response) {
 
-        console.log('This is the request.body', request.body)
 
         var user = new User({
           username: request.body.username,
@@ -35,6 +46,7 @@ module.exports = {
         User.findOne({username: request.body.username}, function(err, user) {
           if (err) {
             console.log('ERROR', err);
+
           } else if (user){
             request.session.userID = user._id
             request.session.username = user.username
@@ -56,16 +68,25 @@ module.exports = {
       },
 
       uploadtune: function(request, response) {
-        console.log('this is the file',request.file);
-        console.log(typeof(request.file));
-
-        var file = new User({
-          file: request.file
+        // console.log('this is the factory user',taskFactory.user);
+        console.log('THIS IS THE REQUEST', request.file);
+        var tune = new Tune({
+          user: request.session.user,
+          file: {
+            originalname: request.file.originalname,
+            encoding: request.file.encoding,
+            mimetype: request.file.mimetype,
+            destination: request.file.destination,
+            filename: request.file.filename,
+            path: request.file.path,
+            size: request.file.size
+          }
         })
-        user.save(function(err, file) {
+        tune.save(function(err, tune) {
           if (err) {
             console.log(err);
           }
+
           fs.writeFile('testFile.mp3', request.file, "base64", function(err) {
             if (err) {
               console.log(err)
@@ -151,7 +172,18 @@ module.exports = {
             }
           })
         })
-      },
+
+
+          fs.writeFile('testFile.mp3', request.file, "base64", function(err) {
+            if (err) {
+              console.log(err)
+            } else {
+              response.json(tune)
+            }
+          })
+        },
+
+
 
       unfollow: function(request, response){
         User.findOne({_id:request.session.userID}, function(err, user){
