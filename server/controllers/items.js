@@ -31,7 +31,7 @@ module.exports = {
           if (err) {
             console.log(err);
           } else {
-            // console.log('THIS IS THE TUNE', tune, 'end of TUNE');
+            console.log('THIS IS THE TUNE', tune, 'end of TUNE');
             response.json(tune)
           }
         })
@@ -71,11 +71,33 @@ module.exports = {
         });
       },
 
+      updatecounter: function(request, response) {
+        console.log(request.body.tune);
+        Tune.findOne({_id: request.body.tune._id}, function(err, tune) {
+          if (err) {
+            console.log('this is an error', err);
+          } else {
+            tune.count+=1;
+            tune.save(function(err) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("UPDATED:", tune);
+            response.json({tune})
+          }
+          })
+          }
+        })
+      },
+
+
+
       uploadtune: function(request, response) {
         // console.log('this is the factory user',taskFactory.user);
-        console.log('THIS IS THE REQUEST', request.file);
         var tune = new Tune({
           user: request.session.user,
+          artist: request.body.artist,
+          song: request.body.song,
           file: {
             originalname: request.file.originalname,
             encoding: request.file.encoding,
@@ -100,4 +122,16 @@ module.exports = {
           })
         })
       },
+
+
+      delete: function(request, response) {
+        Tune.remove({_id: request.params.tuneID}, function(err) {
+          console.log('BEFORE ERROR', request.params.tuneID)
+          if (err) {
+            console.log('this is an error', err);
+          } else {
+            response.json({message: "successfully deleted post"})
+          }
+        })
+      }
     }

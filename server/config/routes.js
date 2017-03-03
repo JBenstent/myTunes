@@ -17,7 +17,9 @@ module.exports = function(app) {
     // app.get("/items", TasksController.index) //Controller get items
 
     app.post("/uploadtune", upload.single('tune'), TunesController.uploadtune)
+    app.delete("/deletetune/:tuneID", TunesController.delete)
     app.get("/uploadtune", TunesController.getdata)
     app.post("/createuser", TunesController.createuser) //Controller create items
     app.post("/loginuser", TunesController.loginuser)
+    app.post("/updatecounter", TunesController.updatecounter)
 };

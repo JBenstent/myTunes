@@ -16,6 +16,9 @@ var UserSchema = mongoose.Schema({
 
 var TuneSchema = mongoose.Schema({
   user: {type: mongoose.Schema.Types.ObjectId, ref:"User"},
+  count: {type: Number, default:0},
+  artist: String,
+  song: String,
   file: {
     originalname: String,
     encoding: String,
@@ -23,7 +26,7 @@ var TuneSchema = mongoose.Schema({
     destination: String,
     filename: String,
     path: String,
-    size: Number
+    size: Number,
   },
 })
 

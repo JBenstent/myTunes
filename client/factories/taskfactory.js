@@ -39,6 +39,22 @@ factory.ValidateUser = function(user, callback) {
     callback(response.data)
   })
 }
+
+factory.updatecounter = function(tune, callback) {
+  $http.post('/updatecounter', {tune: tune}).then(function(response) {
+    console.log('this is the response',response.data.tune.count);
+    callback(response.data.tune.count)
+  })
+}
+
+factory.Delete = function(tune, callback) {
+  console.log('TUNE ID',tune._id);
+  $http.remove('/deletetune/'+tune._id).then(function(response) {
+    callback(response)
+  })
+}
+
+
 return factory;
 
 })
