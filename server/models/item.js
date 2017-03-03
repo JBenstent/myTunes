@@ -9,8 +9,9 @@ var mongoose = require("mongoose")
 
 var UserSchema = mongoose.Schema({
   username: String,
+  image: String,
   followers: [{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
-  following: [],
+  following: [{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
   password: String
 })
 

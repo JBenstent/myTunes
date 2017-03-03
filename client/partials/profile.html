@@ -4,7 +4,14 @@ View / Template for showing all items
  -->
  <div class="col-lg-6 col-sm-6">
          <div class="useravatar">
-             <img src="" alt="profile picture">
+             <img src="182f1d8a9d4274e6df94ee6240920b9d" alt="profile picture">
+             <input type="file" id="file" ngf-resize="{width: 200, height: 200}" ngf-select ng-model="imagefile" name="imagefile"/>
+             <br>
+             <button ng-click="uploadImage()">Upload Image</button>
+             <br>
+             <br>
+             <p><button type="button" id="followbtn" ng-click="follow(user._id)">Follow</button></p>
+             <p><button type="button" id="Unfollowbtn" ng-click="Unfollow(user._id)">UnFollow</button></p>
          </div>
          <div class="card-info"> <span class="card-title">User Information</span>
 
@@ -19,15 +26,21 @@ View / Template for showing all items
          <div class="btn-group" role="group">
              <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
                  <div class="hidden-xs">Followers</div>
+                 {{singleProfile.followers.length}}
              </button>
          </div>
          <div class="btn-group" role="group">
              <button type="button" id="following" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                  <div class="hidden-xs">Following</div>
+                 {{singleProfile.following.length}}
              </button>
          </div>
      </div>
-
+     <div class="">
+       {{ loggedinuser }}
+       <br>
+       LOGGED IN USER PHOTO: <img ng-src="{{ loggedinuser.image }}" alt="">
+     </div>
      <div class="well">
        <div class="tab-content">
          <div class="tab-pane fade in active" id="tab1">
@@ -41,5 +54,13 @@ View / Template for showing all items
        </div>
      </div>
 
+
+     </div>
+     <div class="">
+       <h1>Hello {{singleProfile.username}} </h1>
+       <hr>
+       <ul>
+         <li ng-repeat="u in allUsers.users"><a href="#!/profile/{{u._id}}">{{u.username}}</a></li>
+       </ul>
 
      </div>
